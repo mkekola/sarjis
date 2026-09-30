@@ -19,6 +19,15 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { name: 'theme-color', content: '#1e2422' },
+        // iOS only treats the app as installed when this is set.
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+        { name: 'apple-mobile-web-app-title', content: 'Sarjis' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/icons/favicon-32.png' },
+        { rel: 'apple-touch-icon', href: '/icons/apple-touch-icon.png' },
       ],
     },
   },
@@ -47,10 +56,20 @@ export default defineNuxtConfig({
       orientation: 'portrait',
       start_url: '/',
       scope: '/',
-      background_color: '#F6EFDD',
-      theme_color: '#E0342A',
-      // Ikonit puuttuvat tarkoituksella: ne tehdään SARJIS-wordmarkista
-      // kun typografia ja paletti on lyöty lukkoon.
+      background_color: '#1e2422',
+      theme_color: '#1e2422',
+      icons: [
+        { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+        { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+        // Android masks this one to its own shape, so the mark is drawn inside
+        // the middle 80% that is guaranteed to survive.
+        {
+          src: '/icons/maskable-512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'maskable',
+        },
+      ],
     },
 
     devOptions: {
