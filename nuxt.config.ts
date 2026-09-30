@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   // eli se rikkoisi sovelluksen juuri salin kellarissa.
   ssr: false,
 
-  modules: ['@vite-pwa/nuxt'],
+  modules: ['@nuxt/eslint', '@vite-pwa/nuxt'],
 
   pwa: {
     // injectManifest: Workbox injektoi vain buildin tiedostolistan,
@@ -45,4 +45,4 @@ export default defineNuxtConfig({
       type: 'module',
     },
   },
-})
+});
