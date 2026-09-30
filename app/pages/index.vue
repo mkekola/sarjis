@@ -135,22 +135,26 @@ function skipRest() {
           <SetPips :done="current.sets.length" :total="current.plannedSets" />
         </section>
 
-        <RestBubble
-          v-if="rest.isRunning.value"
-          :label="rest.label.value"
-          @add="rest.add(30)"
-          @skip="skipRest"
-        />
+        <!-- Pinned to the bottom of the screen: this is the half of the phone a
+             thumb reaches while the other hand is holding a bar. -->
+        <div class="bottom">
+          <RestBubble
+            v-if="rest.isRunning.value"
+            :label="rest.label.value"
+            @add="rest.add(30)"
+            @skip="skipRest"
+          />
 
-        <FeelPicker
-          v-if="justLogged"
-          :model-value="ratingOfLoggedSet"
-          @update:model-value="rateSet"
-        />
+          <FeelPicker
+            v-if="justLogged"
+            :model-value="ratingOfLoggedSet"
+            @update:model-value="rateSet"
+          />
 
-        <button type="button" class="stamp" @click="logSet">Merkkaa sarja</button>
+          <button type="button" class="stamp" @click="logSet">Merkkaa sarja</button>
 
-        <UpNextList :items="upNext" />
+          <UpNextList :items="upNext" />
+        </div>
       </template>
 
       <p v-else class="done">Treeni tehty.</p>
@@ -160,14 +164,22 @@ function skipRest() {
 
 <style scoped>
 .screen {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--s3);
-  align-content: start;
   max-width: 26rem;
   min-height: 100%;
   margin-inline: auto;
   padding-inline: var(--s3);
-  padding-block: var(--s3) var(--s6);
+  padding-top: calc(var(--s3) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  margin-top: auto;
 }
 
 .loading,
@@ -210,13 +222,35 @@ function skipRest() {
   text-align: center;
 }
 
+/* Speed lines enter from the panel's edges and stop well short of the centred
+   figures. Confined by position rather than by a mask, so there is no way for
+   them to end up behind something readable. */
 .motion {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(90deg, var(--dot) 0 1px, transparent 1px 7px);
-  mask-image: linear-gradient(90deg, #000, transparent 38%, transparent 62%, #000);
-  -webkit-mask-image: linear-gradient(90deg, #000, transparent 38%, transparent 62%, #000);
   pointer-events: none;
+}
+
+.motion::before,
+.motion::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2.25rem;
+  background: repeating-linear-gradient(90deg, var(--dot) 0 1px, transparent 1px 7px);
+}
+
+.motion::before {
+  left: 0;
+  mask-image: linear-gradient(90deg, #000, transparent);
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent);
+}
+
+.motion::after {
+  right: 0;
+  mask-image: linear-gradient(270deg, #000, transparent);
+  -webkit-mask-image: linear-gradient(270deg, #000, transparent);
 }
 
 .setline {
