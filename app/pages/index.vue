@@ -2,6 +2,7 @@
 import { IndexedDbTrainingRepository } from '../lib/indexeddb-repository';
 import { formatElapsed } from '../lib/duration';
 import { seedExercises, seedWorkout } from '../lib/seed';
+import { durationMs, isComplete, setCount, totalVolume } from '../lib/summary';
 import type { Exercise, SetFeel, Workout } from '../lib/types';
 
 const repo = new IndexedDbTrainingRepository();
@@ -50,8 +51,15 @@ const currentName = computed(() =>
   current.value ? (names.value.get(current.value.exerciseId) ?? current.value.exerciseId) : '',
 );
 
+/** Stops at endedAt: a finished workout must not keep counting. */
 const elapsed = computed(() =>
-  workout.value ? formatElapsed(now.value - Date.parse(workout.value.startedAt)) : '0:00',
+  workout.value ? formatElapsed(durationMs(workout.value, now.value)) : '0:00',
+);
+
+const summary = computed(() =>
+  workout.value
+    ? { sets: setCount(workout.value), volume: totalVolume(workout.value) }
+    : { sets: 0, volume: 0 },
 );
 
 const ratingOfLoggedSet = computed(() => {
@@ -84,8 +92,26 @@ async function logSet() {
   active.updatedAt = stamp();
   justLogged.value = { entry: index, set: entry.sets.length - 1 };
 
+  // Closing the workout is what stops the clock and frees getActiveWorkout to
+  // return nothing next time. Without it the app would reopen a finished
+  // session for ever.
+  const finished = isComplete(active);
+  if (finished) {
+    active.endedAt = stamp();
+    rest.skip();
+    void wake.release();
+  }
+
   await repo.saveWorkout(plain(active));
-  rest.start(entry.restSeconds);
+  if (!finished) rest.start(entry.restSeconds);
+}
+
+async function startNextWorkout() {
+  const next = seedWorkout();
+  await repo.saveWorkout(next);
+  workout.value = next;
+  justLogged.value = null;
+  void wake.request();
 }
 
 async function rateSet(feel: SetFeel) {
@@ -157,7 +183,40 @@ function skipRest() {
         </div>
       </template>
 
-      <p v-else class="done">Treeni tehty.</p>
+      <template v-else>
+        <!-- The closing panel. Comics end on one, and it is the right shape for
+             a summary: still a panel, still read in order, just the last. -->
+        <CaptionBox text="Treeni tehty" />
+
+        <section class="panel">
+          <dl class="summary">
+            <div>
+              <dt>Kesto</dt>
+              <dd class="tabular">{{ elapsed }}</dd>
+            </div>
+            <div>
+              <dt>Sarjoja</dt>
+              <dd class="tabular">{{ summary.sets }}</dd>
+            </div>
+            <div>
+              <dt>Volyymi</dt>
+              <dd class="tabular">{{ summary.volume }} kg</dd>
+            </div>
+          </dl>
+        </section>
+
+        <div class="bottom">
+          <!-- The last set still deserves a rating, so the picker outlives the
+               exercise it belongs to. -->
+          <FeelPicker
+            v-if="justLogged"
+            :model-value="ratingOfLoggedSet"
+            @update:model-value="rateSet"
+          />
+
+          <button type="button" class="stamp" @click="startNextWorkout">Aloita uusi</button>
+        </div>
+      </template>
     </template>
   </main>
 </template>
@@ -182,11 +241,37 @@ function skipRest() {
   margin-top: auto;
 }
 
-.loading,
-.done {
+.loading {
   margin: var(--s6) 0;
   color: var(--ink-soft);
   text-align: center;
+}
+
+.summary {
+  display: grid;
+  gap: var(--s3);
+  margin: 0;
+}
+
+.summary div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3);
+}
+
+.summary dt {
+  color: var(--ink-soft);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.summary dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
 }
 
 .hud {
