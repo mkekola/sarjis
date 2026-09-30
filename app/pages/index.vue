@@ -15,12 +15,35 @@ const justLogged = ref<{ entry: number; set: number } | null>(null);
 const now = useNow();
 const rest = useRestTimer();
 const wake = useWakeLock();
+const { isStandalone, isIos } = useStandalone();
+
+const GUIDE_KEY = 'sarjis.install-dismissed';
+/** Starts hidden so the guide never flashes before we know the display mode. */
+const guideDismissed = ref(true);
+const showGuide = computed(() => !isStandalone.value && !guideDismissed.value);
+
+function dismissGuide() {
+  guideDismissed.value = true;
+  try {
+    localStorage.setItem(GUIDE_KEY, '1');
+  } catch {
+    // Private mode, or storage refused. The guide will ask again, which is the
+    // right failure: Safari clears this after a week of disuse anyway, and that
+    // is exactly when the warning is worth repeating.
+  }
+}
 
 /** IndexedDB stores structured clones, and a Vue proxy is not one. */
 const plain = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
 const stamp = () => new Date().toISOString();
 
 onMounted(async () => {
+  try {
+    guideDismissed.value = localStorage.getItem(GUIDE_KEY) === '1';
+  } catch {
+    guideDismissed.value = false;
+  }
+
   const exercises = await loadExercises();
   names.value = new Map(exercises.map((exercise) => [exercise.id, exercise.name]));
 
@@ -132,7 +155,9 @@ function skipRest() {
 </script>
 
 <template>
-  <main class="screen">
+  <InstallGuide v-if="showGuide" :is-ios="isIos" @dismiss="dismissGuide" />
+
+  <main v-else class="screen">
     <p v-if="!workout" class="loading">Ladataan treeniä…</p>
 
     <template v-else>
