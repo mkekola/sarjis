@@ -1,4 +1,4 @@
-import type { Exercise, Program, Workout } from './types'
+import type { Exercise, Program, Workout } from './types';
 
 /**
  * Every read and write goes through this port. The first implementation stores
@@ -10,24 +10,29 @@ import type { Exercise, Program, Workout } from './types'
  * argument belongs to the sync layer, not to the domain.
  */
 export interface TrainingRepository {
-  listExercises(): Promise<Exercise[]>
-  getExercise(id: string): Promise<Exercise | null>
-  saveExercise(exercise: Exercise): Promise<void>
+  listExercises(): Promise<Exercise[]>;
+  getExercise(id: string): Promise<Exercise | null>;
+  saveExercise(exercise: Exercise): Promise<void>;
 
-  listPrograms(): Promise<Program[]>
-  getProgram(id: string): Promise<Program | null>
-  saveProgram(program: Program): Promise<void>
+  listPrograms(): Promise<Program[]>;
+  getProgram(id: string): Promise<Program | null>;
+  saveProgram(program: Program): Promise<void>;
 
   /** Newest first. */
-  listWorkouts(): Promise<Workout[]>
-  getWorkout(id: string): Promise<Workout | null>
+  listWorkouts(): Promise<Workout[]>;
+  getWorkout(id: string): Promise<Workout | null>;
   /** The workout with no endedAt, if one is running. */
-  getActiveWorkout(): Promise<Workout | null>
-  saveWorkout(workout: Workout): Promise<void>
+  getActiveWorkout(): Promise<Workout | null>;
+  saveWorkout(workout: Workout): Promise<void>;
 
-  /** Every logged set for one exercise, for personal bests and inherited weights. */
-  setsForExercise(exerciseId: string): Promise<Workout[]>
+  /**
+   * Every workout containing this exercise, for personal bests and inherited
+   * weights. Entries are nested inside workouts, so this scans rather than uses
+   * an index — at a few hundred workouts that is cheaper than denormalising an
+   * exercise-id list onto every record.
+   */
+  workoutsWithExercise(exerciseId: string): Promise<Workout[]>;
 
   /** Whole-database export, for the JSON backup. */
-  exportAll(): Promise<{ exercises: Exercise[], programs: Program[], workouts: Workout[] }>
+  exportAll(): Promise<{ exercises: Exercise[]; programs: Program[]; workouts: Workout[] }>;
 }
