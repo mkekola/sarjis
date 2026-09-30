@@ -16,7 +16,7 @@ interface SarjisDB extends DBSchema {
  * added behind TrainingRepository without the app changing.
  *
  * Note this data only survives on iOS when the app is installed to the home
- * screen — Safari clears a site's storage after seven days of disuse, and
+ * screen. Safari clears a site's storage after seven days of disuse, and
  * installed web apps are exempt from that.
  */
 export class IndexedDbTrainingRepository implements TrainingRepository {

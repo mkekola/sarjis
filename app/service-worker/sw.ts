@@ -2,8 +2,8 @@
 
 // Workbox injektoi tiedostolistan sisältöhasheineen etsimällä käännetystä
 // tiedostosta kirjaimellisen self.__WB_MANIFEST -viittauksen, joten se on
-// kirjoitettava juuri noin. Se on ainoa asia jonka riippuvuus tekee —
-// logiikka alla on omaa.
+// kirjoitettava juuri noin. Se on ainoa asia jonka riippuvuus tekee.
+// Logiikka alla on omaa.
 declare const self: ServiceWorkerGlobalScope & {
   __WB_MANIFEST: Array<{ url: string; revision: string | null }>;
 };
@@ -29,7 +29,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// registerType: 'prompt' — uusi versio odottaa kunnes käyttäjä hyväksyy sen.
+// registerType: 'prompt', eli uusi versio odottaa kunnes käyttäjä hyväksyy sen.
 self.addEventListener('message', (event) => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });

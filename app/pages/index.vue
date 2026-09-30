@@ -177,7 +177,7 @@ function skipRest() {
           <p class="setline">Sarja {{ current.sets.length + 1 }} / {{ current.plannedSets }}</p>
 
           <p class="load tabular">
-            <span class="kg">{{ current.plannedWeight ?? '—' }}</span>
+            <span class="kg">{{ current.plannedWeight ?? '?' }}</span>
             <span class="unit">kg</span>
             <span class="times">×</span>
             <span class="reps">{{ current.plannedReps }}</span>
@@ -321,7 +321,7 @@ function skipRest() {
 }
 
 /* One panel, one exercise. Depth comes from line weight and a hard offset,
-   never from a soft shadow — that is how comics are printed. */
+   never from a soft shadow, which is how comics are printed. */
 .panel {
   position: relative;
   overflow: hidden;

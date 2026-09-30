@@ -1,7 +1,7 @@
 import type { LoggedSet, PersonalBest } from './types';
 
 /**
- * Above this the Epley formula stops being meaningful — a 20-rep set would
+ * Above this the Epley formula stops being meaningful: a 20-rep set would
  * estimate a higher max than a heavy triple. Long sets simply do not compete
  * for a personal best.
  */

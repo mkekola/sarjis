@@ -7,7 +7,7 @@ import { onScopeDispose, ref } from 'vue';
  * Two things the API does not do for you: it is released automatically whenever
  * the page is hidden, so it has to be re-requested when you come back, and it
  * rejects without warning when the browser declines. Neither is an error worth
- * showing — the app simply works slightly worse.
+ * showing, since the app simply works slightly worse.
  *
  * Supported in Safari from iOS 16.4, and in installed home-screen apps only
  * from iOS 18.4, where a long-standing bug was fixed.

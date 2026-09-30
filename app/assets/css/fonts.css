@@ -1,6 +1,6 @@
 /* Self-hosted rather than loaded from Google Fonts: the app has to open in a
    basement gym with no signal, and a remote stylesheet would fall back to
-   system fonts exactly there. Latin subset only — it covers ä and ö. */
+   system fonts exactly there. Latin subset only, which covers ä and ö. */
 
 @font-face {
   font-family: 'Bangers';

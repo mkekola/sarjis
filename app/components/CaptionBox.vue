@@ -4,7 +4,7 @@ defineProps<{ text: string }>();
 
 <template>
   <!-- Comic element 1 of 3: the narrator box states where you are.
-       It does not address you — that is the speech bubble's job. -->
+       Addressing you is the speech bubble's job. -->
   <p class="caption">{{ text }}</p>
 </template>
 

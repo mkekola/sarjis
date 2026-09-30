@@ -19,8 +19,8 @@ defineEmits<{ dismiss: [] }>();
     <div class="bubble">
       <p>
         Treenihistoriasi elää puhelimessa, ei palvelimella. Selain tyhjentää sen viikon
-        käyttämättömyyden jälkeen —
-        <strong>kotivalikkoon asennettua sovellusta se ei koske.</strong>
+        käyttämättömyyden jälkeen.
+        <strong>Kotivalikkoon asennettua sovellusta se ei koske.</strong>
       </p>
       <p>Samalla ruutu pysyy hereillä treenin ajan, eikä appi kysy verkkoa.</p>
     </div>
@@ -79,7 +79,7 @@ defineEmits<{ dismiss: [] }>();
   border: var(--line-w) solid var(--line);
 }
 
-/* The app speaking, so it is a bubble — the same shape as the rest timer. */
+/* The app speaking, so it is a bubble, the same shape as the rest timer. */
 .bubble {
   position: relative;
   padding: var(--s3) var(--s4);

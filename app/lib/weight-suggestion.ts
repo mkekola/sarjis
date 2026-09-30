@@ -3,7 +3,7 @@ import type { WeightSuggestion, WorkoutEntry } from './types';
 /** Smallest practical barbell change: a 1.25 kg plate on each side. */
 export const DEFAULT_INCREMENT_KG = 2.5;
 
-/** One rating is not evidence — the first set of an exercise always feels easiest. */
+/** One rating is not evidence: the first set of an exercise always feels easiest. */
 const MIN_RATED_SETS = 2;
 
 /**
@@ -11,7 +11,7 @@ const MIN_RATED_SETS = 2;
  *
  * Deliberately never applies to the workout in progress: changing the weight
  * mid-exercise would break the set structure the plan is built on. This is
- * autoregulation — the load follows perceived effort instead of a fixed formula.
+ * autoregulation: the load follows perceived effort instead of a fixed formula.
  */
 export function suggestWeight(
   entry: WorkoutEntry,

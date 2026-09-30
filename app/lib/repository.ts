@@ -28,7 +28,7 @@ export interface TrainingRepository {
   /**
    * Every workout containing this exercise, for personal bests and inherited
    * weights. Entries are nested inside workouts, so this scans rather than uses
-   * an index — at a few hundred workouts that is cheaper than denormalising an
+   * an index. At a few hundred workouts that is cheaper than denormalising an
    * exercise-id list onto every record.
    */
   workoutsWithExercise(exerciseId: string): Promise<Workout[]>;

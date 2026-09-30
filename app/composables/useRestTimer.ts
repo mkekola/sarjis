@@ -8,7 +8,7 @@ import { formatRemaining } from '../lib/duration';
  * This is the whole point: browsers throttle timers in a backgrounded tab, and
  * a phone locks its screen between sets. A counter that subtracts on every tick
  * loses exactly the time the phone spent in your pocket. Storing the deadline
- * and recomputing from Date.now() means a missed tick costs nothing — when the
+ * and recomputing from Date.now() means a missed tick costs nothing: when the
  * screen wakes, the number is already right.
  */
 export function useRestTimer() {
