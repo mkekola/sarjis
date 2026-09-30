@@ -1,0 +1,105 @@
+/* Design tokens.
+ *
+ * Dark first: the dark values live on bare :root because that is the theme the
+ * app is actually used in. Light overrides under prefers-color-scheme, plus a
+ * [data-theme] hook in both directions so a manual toggle can win either way.
+ *
+ * Three separate ink roles, which on paper would be one physical ink:
+ *   --ink     text, needs maximum contrast
+ *   --line    borders, structure only, 3:1 is enough
+ *   --shadow  the hard offset, always DARKER than the surface it falls on
+ */
+
+:root {
+  color-scheme: dark;
+
+  --paper: #1e2422;
+  --paper-2: #2b3330;
+  --ink: #eae5d6;
+  --ink-soft: #9aada9;
+  --line: #8b8d82;
+  --shadow: #101514;
+
+  --cta: #e06a45;
+  --cta-fg: #1e2422;
+  --caption: #e2a449;
+  --caption-fg: #1e2422;
+  --bubble: #3aa6b3;
+  --bubble-fg: #1e2422;
+
+  --dot: rgba(154, 173, 169, 0.4);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    color-scheme: light;
+
+    --paper: #f4f0e4;
+    --paper-2: #cbcec4;
+    --ink: #333c38;
+    --ink-soft: #445856;
+    --line: #333c38;
+    --shadow: #333c38;
+
+    --cta: #bf4723;
+    --cta-fg: #fdfbf4;
+    --caption: #e2a449;
+    --caption-fg: #333c38;
+    --bubble: #1a7b86;
+    --bubble-fg: #fdfbf4;
+
+    --dot: rgba(118, 144, 142, 0.55);
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --paper: #f4f0e4;
+  --paper-2: #cbcec4;
+  --ink: #333c38;
+  --ink-soft: #445856;
+  --line: #333c38;
+  --shadow: #333c38;
+
+  --cta: #bf4723;
+  --cta-fg: #fdfbf4;
+  --caption: #e2a449;
+  --caption-fg: #333c38;
+  --bubble: #1a7b86;
+  --bubble-fg: #fdfbf4;
+
+  --dot: rgba(118, 144, 142, 0.55);
+}
+
+:root {
+  /* Lettering is all-caps and breaks in running text, so it is limited to the
+     caption box, the primary button and the wordmark. */
+  --font-letter: 'Bangers', Impact, sans-serif;
+  --font-display: 'Archivo Black', 'Arial Black', sans-serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --display-sm: 2rem;
+  --display-md: 2.5rem;
+  --display-lg: clamp(3.5rem, 20vw, 5rem);
+
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 0.75rem;
+  --s4: 1rem;
+  --s5: 1.5rem;
+  --s6: 2rem;
+  --s7: 3rem;
+
+  --line-w: 3px;
+  --line-w-thick: 4px;
+  --offset: 5px;
+
+  /* Nothing smaller is reliable with a sweaty thumb. */
+  --tap: 44px;
+}

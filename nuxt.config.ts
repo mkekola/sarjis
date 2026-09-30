@@ -10,6 +10,19 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/eslint', '@vite-pwa/nuxt'],
 
+  css: ['~/assets/css/fonts.css', '~/assets/css/tokens.css', '~/assets/css/base.css'],
+
+  app: {
+    head: {
+      htmlAttrs: { lang: 'fi' },
+      title: 'Sarjis',
+      meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
+        { name: 'theme-color', content: '#1e2422' },
+      ],
+    },
+  },
+
   pwa: {
     // injectManifest: Workbox injektoi vain buildin tiedostolistan,
     // service workerin logiikka on meidän omaa koodia service-worker/sw.ts:ssä.
