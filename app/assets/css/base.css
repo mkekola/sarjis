@@ -18,12 +18,24 @@ body {
   font-size: var(--text-base);
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
+
+  /*
+   * iOS zooms on a fast double tap, and the same button here gets pressed
+   * twenty times in a workout, so it fires constantly. This drops the
+   * double-tap gesture while leaving pinch zoom working, which it has to:
+   * taking zoom away entirely would fail WCAG 1.4.4.
+   *
+   * Set on the container because the browser walks up the tree to decide what
+   * a touch is allowed to do, so one declaration covers every control.
+   */
+  touch-action: manipulation;
 }
 
 button {
   font: inherit;
   color: inherit;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 :focus-visible {
