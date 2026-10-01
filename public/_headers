@@ -1,0 +1,9 @@
+# Netlify tarjoilee manifestin muuten application/octet-stream -tyyppisenä,
+# jolloin Chrome voi hylätä sen eikä sovellusta voi asentaa.
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+
+# Service worker ei saa jäädä välimuistiin, muuten uusi versio ei koskaan
+# korvaa vanhaa.
+/sw.js
+  Cache-Control: no-cache
